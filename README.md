@@ -1,7 +1,9 @@
 # nCoVSegNet
 COVID-19 Lung Infection Segmentation with A Novel Two-Stage Cross-Domain Transfer Learning Framework
 
-![image-20210808080741099](/Users/cg/codes/nCoVSegNet/images/overview.png)
+<p align="center">
+    <img src="images/overview.png" width="80%"/> <br />
+</p>
 
 ## Requirements
 
