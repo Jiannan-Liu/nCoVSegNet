@@ -124,7 +124,7 @@ class GCA_2(nn.Module):
 class DAF(nn.Module):
     def __init__(self, channels_high, channels_low, kernel_size=3, upsample=True):
         super(DAF, self).__init__()
-        # Global Attention Upsample
+  
         self.conv1_1 = conv1x1(channels_high, channels_low)
         self.upsample = upsample
         self.conv3x3 = nn.Conv2d(channels_low, channels_low, kernel_size=3, padding=1, bias=False)
@@ -213,15 +213,15 @@ class nCoVSegNet(nn.Module):
         self.ecaresnet = ECAResnet()
         # ---- Receptive Field Block like module ----
 
-        self.rfb1 = GCA_1(256, 128)
-        self.rfb2 = GCA_1(512, 256)
-        self.rfb3 = GCA_1(1024, 512)
-        self.rfb4 = GCA_2(2048, 1024)
+        self.gca1 = GCA_1(256, 128)
+        self.gca2 = GCA_1(512, 256)
+        self.gca3 = GCA_1(1024, 512)
+        self.gca4 = GCA_2(2048, 1024)
 
         bottom_ch = 1024
-        self.gau3 = DAF(bottom_ch, 512)
-        self.gau2 = DAF(bottom_ch // 2, 256)
-        self.gau1 = DAF(bottom_ch // 4, 128)
+        self.daf3 = DAF(bottom_ch, 512)
+        self.daf2 = DAF(bottom_ch // 2, 256)
+        self.daf1 = DAF(bottom_ch // 4, 128)
 
         self.conv1_1 = conv1x1(128, 1)
         self.conv1_2 = conv1x1(256, 1)
@@ -247,19 +247,19 @@ class nCoVSegNet(nn.Module):
         x3 = self.ecaresnet.layer3(x2)     # bs, 1024, 22, 22
         x4 = self.ecaresnet.layer4(x3)     # bs, 2048, 11, 11
 
-        x1_rfb = self.rfb1(x1)        # 256 -> 256
-        x2_rfb = self.rfb2(x2)        # 512 -> 512
-        x3_rfb = self.rfb3(x3)        # 1024 -> 1024
-        x4_rfb = self.rfb4(x4)
+        x1_gca = self.gca1(x1)        # 256 -> 128
+        x2_gca = self.gca2(x2)        # 512 -> 256
+        x3_gca = self.gca3(x3)        # 1024 -> 512
+        x4_gca = self.gca4(x4)        # 2048 -> 1024
 
-        x3 = self.gau3(x4_rfb, x3_rfb)  # 1/16
-        x2 = self.gau2(x3, x2_rfb)  # 1/8
-        x1 = self.gau1(x2, x1_rfb)  # 1/4
+        x3 = self.daf3(x4_gca, x3_gca)  # 1/16
+        x2 = self.daf2(x3, x2_gca)  # 1/8
+        x1 = self.daf1(x2, x1_gca)  # 1/4
 
         map_1 = self.conv1_1(x1)
         map_2 = self.conv1_2(x2)
         map_3 = self.conv1_3(x3)
-        map_4 = self.conv1_4(x4_rfb)
+        map_4 = self.conv1_4(x4_gca)
 
         lateral_map_4 = F.interpolate(map_4, scale_factor=32, mode='bilinear')
         lateral_map_3 = F.interpolate(map_3, scale_factor=16, mode='bilinear')
@@ -269,7 +269,7 @@ class nCoVSegNet(nn.Module):
         return lateral_map_4, lateral_map_3, lateral_map_2, lateral_map_1
 
     def initialize_weights(self):
-        res50 = models.resnet50(pretrained=False)
+        res50 = models.resnet50(pretrained=False) #If True, the pre-trained resnet50 will be loaded.
         pretrained_dict = res50.state_dict()
         model_dict = self.ecaresnet.state_dict()
         pretrained_dict = {k: v for k, v in pretrained_dict.items() if k in model_dict}
