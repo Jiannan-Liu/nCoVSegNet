@@ -46,7 +46,7 @@ COVID-19 Lung Infection Segmentation with A Novel Two-Stage Cross-Domain Transfe
 
 - Evaluate the result maps:
 
-  You can evaluate the result maps using the tool in `./utils/evaluation.py`
+  You can evaluate the result maps using the tool in `./utils/evaluation.py`.
 
 ## Citation
 
