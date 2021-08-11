@@ -5,15 +5,16 @@ COVID-19 Lung Infection Segmentation with A Novel Two-Stage Cross-Domain Transfe
     <img src="images/overview.png" width="80%"/> <br />
 </p>
 
+
 ## Requirements
 
 - Python3
 - Pytorch version >= 1.2.0.
-- Some basic python packages such as Numpy, Pandas, SimpleITK.
+- Some basic python packages, such as Numpy, Pandas, SimpleITK.
 
 ## Data Preparation
 
-- Please put the 2D CT images in the following directory: `./dataset/`, and organize the data as following structure:
+- Please put CT images and segmentation masks in the following directory: `./dataset/`, and organize the data as follows:
   ``` 
      ├── dataset
         ├── train
@@ -30,7 +31,7 @@ COVID-19 Lung Infection Segmentation with A Novel Two-Stage Cross-Domain Transfe
                ├── case01
                    ├── 1.png, 2.png, xxxx
                ├── xxxx
-   ```
+  ```
 
 ## Training & Testing
 
@@ -44,9 +45,9 @@ COVID-19 Lung Infection Segmentation with A Novel Two-Stage Cross-Domain Transfe
 
   The results will be saved to `./Results`.
 
-- Evaluate the result maps:
+- Evaluate the segmentation maps:
 
-  You can evaluate the result maps using the tool in `./utils/evaluation.py`.
+  You can evaluate the segmentation maps using the tool in `./utils/evaluation.py`.
 
 ## Citation
 
@@ -60,10 +61,13 @@ booktitle={Medical Image Analysis},
 year={2021}
 }
 ```
-
 ## Acknowledgement
 
-We implement this project based on the code of [Inf-Net](https://github.com/dengpingfan/inf-net) proposed by Fan et al.
+A collection of COVID-19 imaging-based AI research papers and datasets: https://github.com/HzFu/COVID19_imaging_AI_paper_list
+
+<p align="center">
+    <img src="images/paper_list.png" width="80%"/> <br />
+</p>
 
 # License
 
