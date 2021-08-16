@@ -54,7 +54,7 @@ COVID-19 Lung Infection Segmentation with A Novel Two-Stage Cross-Domain Transfe
 Please cite the following paper if you use this repository in your reseach.
 
 ```
-@inproceedings{liu2020covid19,
+@article{liu2021covid19,
 title={COVID-19 Lung Infection Segmentation with A Novel Two-Stage Cross-Domain Transfer Learning Framework},
 author={Jiannan Liu, Bo Dong, Shuai Wang, Hui Cui, Dengping Fan, Jiquan Ma, Geng Chen},
 booktitle={Medical Image Analysis},
